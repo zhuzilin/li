@@ -40,8 +40,11 @@ std::unordered_map<int, void(*)()> fns({
 ```
 Last, add `find.cpp` to `Makefile` and make li. Now the search short cut has been added successfully!
 
+## Customize Highlight
+To customize highlight, please use `default_highlight.cpp` as an example. Don't forget to change the `Makefile`.
+
 ## TODOs
-- [ ] add modular highlight.
+- [x] add modular highlight.
 
 ## Acknowledgement
 - [antirez/kilo](https://github.com/antirez/kilo): A text editor in less than 1000 LOC with syntax highlight and search.
