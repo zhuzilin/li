@@ -76,6 +76,7 @@ std::string editorPrompt(const std::string& prompt, void (*callback)(const std::
 
 /*** add-ons ***/
 void editorFind();
-extern std::unordered_map<int, void(*)()> fns;
+extern std::unordered_map<int, void(*)()> short_cuts;
 
+extern std::string(*highlight)(const std::string&);
 #endif

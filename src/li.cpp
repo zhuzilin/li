@@ -3,7 +3,7 @@
 /*** data ***/
 editorConfig E;
 
-std::unordered_map<int, void(*)()> fns({
+std::unordered_map<int, void(*)()> short_cuts({
     {CTRL_KEY('f'), editorFind}
 });
 
@@ -295,6 +295,8 @@ void editorDrawRows(abuf& ab) {
         } else if ((int)E.rows[filerow].render.size() > E.col_offset) {
             std::string row = E.rows[filerow].render.substr(E.col_offset, 
                 std::min((int)E.rows[filerow].render.size() - E.col_offset, E.screencols));
+            if(highlight != nullptr)
+                row = highlight(row);
             abAppend(ab, row);
         }
         // clear a line at a time
@@ -431,10 +433,10 @@ void editorProcessKeypress() {
         case '\r':  // use '\r' to get enter, don't know why...
             editorInsertNewline();
             break;
-        case CTRL_KEY('q'):
+        case CTRL_KEY('c'):
             if(E.dirty && quit_times > 0) {
                 editorSetStatusMessage("WARNING!!! File has unsaved changes. "
-                    "Press Ctrl-Q " + std::to_string(quit_times) + " more times to quit.");
+                    "Press Ctrl-C " + std::to_string(quit_times) + " more times to quit.");
                 quit_times--;
                 return;
             }
@@ -478,8 +480,8 @@ void editorProcessKeypress() {
             break;
         }
         default:
-            if (fns.find(c) != fns.end()) {
-                fns[c]();
+            if (short_cuts.find(c) != short_cuts.end()) {
+                short_cuts[c]();
                 break;
             }
             editorInsertChar(c);
@@ -508,7 +510,7 @@ int main(int argc, char *argv[]) {
     if (argc >= 2)
         editorOpen(argv[1]);
 
-    editorSetStatusMessage("HELP: Ctrl-S = save | Ctrl-Q = quit");
+    editorSetStatusMessage("HELP: Ctrl-S = save | Ctrl-C = quit");
 
     while(1) {
         editorRefreshScreen();
